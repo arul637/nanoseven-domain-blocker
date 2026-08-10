@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <!--
+    NANO BLOCKER — logo placeholder
+    Drop your own image here (static/img/logo.svg or logo.png) to rebrand.
+    The sidebar reserves this space automatically.
+  -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e1a2e"/>
+      <stop offset="1" stop-color="#070b12"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="mono" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7ee7ff"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="88" height="88" rx="22" fill="url(#bg)"/>
+  <rect x="4" y="4" width="88" height="88" rx="22" fill="none" stroke="url(#ring)" stroke-width="3"/>
+
+  <!-- shield -->
+  <path d="M48 22 L70 31 V49 C70 62 60 70 48 74 C36 70 26 62 26 49 V31 Z"
+        fill="rgba(34,211,238,0.10)" stroke="url(#ring)" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- NB monogram -->
+  <text x="48" y="58" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800"
+        fill="url(#mono)">NB</text>
+</svg>

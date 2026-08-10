@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-stack">
+
+  <!-- Temporary blocks -->
+  <section class="card">
+    <div class="card-head">
+      <div class="card-head-title">
+        <h3>Temporary Blocks</h3>
+        <p>Expiry is based on stored timestamps and survives restarts.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-primary" data-open-modal="temporary-modal">+ New Temporary Block</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Target</th><th>Type</th><th>Reason</th><th>Created</th>
+            <th>Expires</th><th>Remaining</th><th>Status</th><th class="th-actions">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tempRows">
+          <tr><td colspan="8" class="table-empty">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Logs -->
+  <section class="card">
+    <div class="card-head">
+      <div class="card-head-title">
+        <h3>Security Logs</h3>
+        <p>Every security action is recorded here and in <code>logs/application.log</code>.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="exportLogs">Export CSV</button>
+        <button class="btn btn-danger" id="clearLogs">Clear Logs</button>
+      </div>
+    </div>
+
+    <div class="log-filters">
+      <div class="filter-chips" id="logChips" role="group" aria-label="Log category filter">
+        <button class="chip active" data-category="all">All</button>
+        <button class="chip" data-category="domain">Domain</button>
+        <button class="chip" data-category="firewall">Firewall</button>
+        <button class="chip" data-category="blacklist">Blacklist</button>
+        <button class="chip" data-category="whitelist">Whitelist</button>
+        <button class="chip" data-category="temporary">Temporary</button>
+        <button class="chip" data-category="auth">Authentication</button>
+        <button class="chip" data-category="dns">DNS</button>
+        <button class="chip" data-category="error">Errors</button>
+      </div>
+      <input type="search" id="logSearch" class="input input-search"
+             placeholder="Search logs…" aria-label="Search logs">
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Time</th><th>User</th><th>Event</th><th>Target</th>
+            <th>Status</th><th>Message</th>
+          </tr>
+        </thead>
+        <tbody id="logRows">
+          <tr><td colspan="6" class="table-empty">Loading logs…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

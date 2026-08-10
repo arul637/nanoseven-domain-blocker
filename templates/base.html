@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{% block title %}{{ app_name }}{% endblock %} · {{ app_name }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-page="{{ page|default('base') }}">
+  <div class="app">
+
+    <!-- ======================= SIDEBAR ======================= -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <!--
+          LOGO SPACE: drop your own image at static/img/logo.svg (or logo.png).
+          The reserved space below stays the same size so swapping the file is all
+          that is needed.  A placeholder shield (static/img/logo.svg) ships by default.
+        -->
+        <div class="brand-logo">
+          <img src="{{ url_for('static', filename='img/logo.svg') }}"
+               alt="{{ app_name }} logo"
+               class="brand-logo-img">
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-name">{{ app_name }}</h1>
+          <p class="brand-tagline">{{ app_tagline }}</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <p class="nav-label">Menu</p>
+        <a href="{{ url_for('dashboard.index') }}" class="nav-item {{ 'active' if page == 'dashboard' }}">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/dashboard.svg' %}</span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="{{ url_for('domains.page') }}" class="nav-item {{ 'active' if page == 'domains' }}">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/globe.svg' %}</span>
+          <span class="nav-text">Domain Blocking</span>
+        </a>
+        <a href="{{ url_for('firewall.page') }}" class="nav-item {{ 'active' if page == 'firewall' }}">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/shield.svg' %}</span>
+          <span class="nav-text">UFW Firewall</span>
+        </a>
+        <a href="{{ url_for('lists.page') }}" class="nav-item {{ 'active' if page == 'lists' }}">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/list.svg' %}</span>
+          <span class="nav-text">Blacklist &amp; Whitelist</span>
+        </a>
+        <a href="{{ url_for('temporary.page') }}" class="nav-item {{ 'active' if page == 'temporary' }}">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/clock.svg' %}</span>
+          <span class="nav-text">Temporary Blocks &amp; Logs</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-chip">
+          <span class="admin-avatar">{{ session.get('username', 'A')[:1]|upper }}</span>
+          <div class="admin-meta">
+            <span class="admin-name">{{ session.get('username', 'admin') }}</span>
+            <span class="admin-role">Administrator</span>
+          </div>
+        </div>
+        <button class="nav-item nav-btn" data-open-modal="password-modal">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/key.svg' %}</span>
+          <span class="nav-text">Change Password</span>
+        </button>
+        <button class="nav-item nav-btn" data-open-modal="about-modal">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/info.svg' %}</span>
+          <span class="nav-text">About &amp; Settings</span>
+        </button>
+        <a href="{{ url_for('auth.logout') }}" class="nav-item nav-logout">
+          <span class="nav-icon" aria-hidden="true">{% include 'icons/logout.svg' %}</span>
+          <span class="nav-text">Logout</span>
+        </a>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar" aria-expanded="true">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- ======================= MAIN ======================= -->
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h2 id="pageTitle">{{ title|default('Nano Blocker') }}</h2>
+          <p class="topbar-sub" id="pageSub">{{ page_sub|default('') }}</p>
+        </div>
+        <div class="topbar-status">
+          <span class="status-pill" id="pillUfw" data-status="loading">
+            <span class="dot"></span><span class="pill-label">UFW · checking…</span>
+          </span>
+          <span class="status-pill" id="pillDns" data-status="loading">
+            <span class="dot"></span><span class="pill-label">DNS · checking…</span>
+          </span>
+        </div>
+      </header>
+
+      {% if not is_linux %}
+      <div class="platform-banner">
+        <span class="banner-icon" aria-hidden="true">{% include 'icons/info.svg' %}</span>
+        <div>
+          <strong>Development platform detected.</strong>
+          UFW and dnsmasq enforcement are unavailable on this host, so system-level
+          operations are reported honestly as unavailable. Deploy on a Linux security
+          lab (see <code>setup.sh</code>) to enable live enforcement.
+        </div>
+        <button class="banner-close" data-dismiss-banner aria-label="Dismiss">&times;</button>
+      </div>
+      {% endif %}
+
+      <main class="content">
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="app-footer">
+        {{ app_name }} · DNS filtering (dnsmasq) + UFW IP enforcement · SQLite backend
+      </footer>
+    </div>
+  </div>
+
+  <!-- ======================= TOASTS ======================= -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- ======================= CONFIRM DIALOG ======================= -->
+  <div class="modal" id="confirm-modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card modal-sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="modal-head">
+        <h3 id="confirmTitle">Are you sure?</h3>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage" class="confirm-message"></p>
+        <p id="confirmDetail" class="confirm-detail"></p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" data-close-modal>Cancel</button>
+        <button class="btn btn-danger" id="confirmOk">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= SHARED MODALS ======================= -->
+  {% include 'modals/shared.html' %}
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+{# Shared modals used across every authenticated view. #}
+
+<!-- Block Domain -->
+<div class="modal" id="block-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="blockModalTitle">
+    <div class="modal-head">
+      <h3 id="blockModalTitle">Block Domain</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <form class="modal-body" data-form="block-domain">
+      <div class="field">
+        <label for="block-domain">Domain name</label>
+        <input id="block-domain" name="domain" type="text" required
+               placeholder="example.com" autocomplete="off" spellcheck="false">
+        <p class="field-hint">Blocks the domain and all of its subdomains.</p>
+      </div>
+      <div class="field">
+        <label for="block-method">Block method</label>
+        <select id="block-method" name="method">
+          <option value="both" selected>DNS + UFW</option>
+          <option value="dns">DNS only</option>
+          <option value="ufw">UFW only</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="block-reason">Reason <span class="opt">(optional)</span></label>
+        <input id="block-reason" name="reason" type="text" placeholder="Why is this blocked?">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Block Domain</button>
+    </form>
+  </div>
+</div>
+
+<!-- Unblock Domain -->
+<div class="modal" id="unblock-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="unblockModalTitle">
+    <div class="modal-head">
+      <h3 id="unblockModalTitle">Unblock Domain</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <form class="modal-body" data-form="unblock-domain">
+      <div class="field">
+        <label for="unblock-domain">Domain name</label>
+        <input id="unblock-domain" name="domain" type="text" required
+               placeholder="example.com" autocomplete="off" spellcheck="false">
+        <p class="field-hint">Removes the DNS block and any Nano Blocker UFW rules for it.</p>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Unblock Domain</button>
+    </form>
+  </div>
+</div>
+
+<!-- Temporary Block -->
+<div class="modal" id="temporary-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="tempModalTitle">
+    <div class="modal-head">
+      <h3 id="tempModalTitle">Temporary Block</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <form class="modal-body" data-form="temporary-block">
+      <div class="field">
+        <label for="temp-target">Target</label>
+        <input id="temp-target" name="target" type="text" required
+               placeholder="example.com or 203.0.113.7" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="temp-type">Target type</label>
+        <select id="temp-type" name="target_type">
+          <option value="domain" selected>Domain</option>
+          <option value="ip">IP address</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="temp-duration">Duration</label>
+        <select id="temp-duration" name="duration_preset" data-duration-preset>
+          <option value="5m">5 minutes</option>
+          <option value="15m">15 minutes</option>
+          <option value="30m">30 minutes</option>
+          <option value="1h">1 hour</option>
+          <option value="6h">6 hours</option>
+          <option value="24h">24 hours</option>
+          <option value="custom">Custom…</option>
+        </select>
+      </div>
+      <div class="field" id="temp-custom-wrap" hidden>
+        <label for="temp-custom">Minutes</label>
+        <input id="temp-custom" name="duration_minutes" type="number" min="1" max="43200"
+               placeholder="e.g. 90">
+      </div>
+      <div class="field">
+        <label for="temp-reason">Reason <span class="opt">(optional)</span></label>
+        <input id="temp-reason" name="reason" type="text" placeholder="Why block temporarily?">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Create Temporary Block</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add Blacklist -->
+<div class="modal" id="blacklist-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="blacklistModalTitle">
+    <div class="modal-head">
+      <h3 id="blacklistModalTitle">Add to Blacklist</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <form class="modal-body" data-form="blacklist-add">
+      <div class="field">
+        <label for="bl-value">Value</label>
+        <input id="bl-value" name="value" type="text" required
+               placeholder="malicious-example.com or 192.168.1.100"
+               autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="bl-type">Type</label>
+        <select id="bl-type" name="value_type">
+          <option value="auto" selected>Auto-detect</option>
+          <option value="domain">Domain</option>
+          <option value="ip">IP address</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="bl-reason">Reason <span class="opt">(optional)</span></label>
+        <input id="bl-reason" name="reason" type="text" placeholder="Suspicious host">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Add to Blacklist</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add Whitelist -->
+<div class="modal" id="whitelist-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="whitelistModalTitle">
+    <div class="modal-head">
+      <h3 id="whitelistModalTitle">Add to Whitelist</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <form class="modal-body" data-form="whitelist-add">
+      <div class="field">
+        <label for="wl-value">Value</label>
+        <input id="wl-value" name="value" type="text" required
+               placeholder="trusted-example.com" autocomplete="off" spellcheck="false">
+        <p class="field-hint">Whitelisted values cannot be blocked while enabled.</p>
+      </div>
+      <div class="field">
+        <label for="wl-type">Type</label>
+        <select id="wl-type" name="value_type">
+          <option value="auto" selected>Auto-detect</option>
+          <option value="domain">Domain</option>
+          <option value="ip">IP address</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="wl-reason">Reason <span class="opt">(optional)</span></label>
+        <input id="wl-reason" name="reason" type="text" placeholder="Trusted service">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Add to Whitelist</button>
+    </form>
+  </div>
+</div>
+
+<!-- Change Password -->
+<div class="modal" id="password-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="passwordModalTitle">
+    <div class="modal-head">
+      <h3 id="passwordModalTitle">Change Password</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <form class="modal-body" data-form="password-change">
+      <div class="field">
+        <label for="pw-current">Current password</label>
+        <input id="pw-current" name="current_password" type="password" required autocomplete="current-password">
+      </div>
+      <div class="field">
+        <label for="pw-new">New password</label>
+        <input id="pw-new" name="new_password" type="password" required minlength="6" autocomplete="new-password">
+        <p class="field-hint">At least 6 characters.</p>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Update Password</button>
+    </form>
+  </div>
+</div>
+
+<!-- About & Settings -->
+<div class="modal" id="about-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle">
+    <div class="modal-head">
+      <h3 id="aboutModalTitle">About &amp; Settings</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body about-body">
+      <div class="about-brand">
+        <span class="about-logo">{% include 'icons/shield.svg' %}</span>
+        <div>
+          <strong>{{ app_name }}</strong>
+          <p>{{ app_tagline }}</p>
+        </div>
+      </div>
+      <div class="alert alert-warning">
+        <strong>⚠ Default credentials.</strong>
+        You are logged in with the default test account
+        (<code>admin / admin</code>). Change the password before deploying
+        anywhere other than a local lab.
+      </div>
+      <ul class="about-list">
+        <li><strong>Enforcement:</strong> DNS filtering (dnsmasq) for domains, UFW for IP-level rules.</li>
+        <li><strong>Binding:</strong> {{ request.host }}</li>
+        <li><strong>Database:</strong> SQLite (parameterized queries only).</li>
+        <li><strong>Owned UFW rules:</strong> tagged <code>IDB-*</code> and safely removable.</li>
+        <li><strong>Docs:</strong> see <code>README.md</code> for setup and sudoers config.</li>
+      </ul>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close-modal>Close</button>
+    </div>
+  </div>
+</div>

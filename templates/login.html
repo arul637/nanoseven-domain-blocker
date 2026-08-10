@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Sign in · {{ app_name }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body" data-page="login">
+  <div class="login-shell">
+    <div class="login-glow" aria-hidden="true"></div>
+
+    <div class="login-card">
+      <div class="login-brand">
+        <!-- LOGO SPACE: replace static/img/logo.svg with your own image. -->
+        <div class="brand-logo brand-logo-lg">
+          <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="{{ app_name }} logo" class="brand-logo-img">
+        </div>
+        <h1 class="login-title">{{ app_name }}</h1>
+        <p class="login-sub">{{ app_tagline }}</p>
+      </div>
+
+      {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('auth.login') }}" class="login-form" autocomplete="off">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" required autofocus
+                 placeholder="admin" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required
+                 placeholder="••••••" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
+      </form>
+
+      <p class="login-note">
+        Default test login: <code>admin</code> / <code>admin</code> ·
+        change it after signing in.
+      </p>
+      <p class="login-foot">Local lab use only — binds to 127.0.0.1.</p>
+    </div>
+  </div>
+</body>
+</html>

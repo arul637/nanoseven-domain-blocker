@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# App runtime data (created on first boot)
+data/
+*.db
+
+# Logs
+logs/*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# ai
+CLAUDE.md
+codex.md
+prompt.txt
+_test_regress.py
+_test_verify2.py
+

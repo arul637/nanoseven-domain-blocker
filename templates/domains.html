@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-stack">
+
+  <section class="card">
+    <div class="card-head">
+      <div class="card-head-title">
+        <h3>Managed Domains</h3>
+        <p>Block a domain via DNS filtering and/or UFW IP rules.</p>
+      </div>
+      <div class="toolbar">
+        <input type="search" id="domainSearch" class="input input-search"
+               placeholder="Search domains…" aria-label="Search domains">
+        <button class="btn btn-primary" data-open-modal="block-modal">+ Add Domain</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Domain</th>
+            <th>Status</th>
+            <th>Method</th>
+            <th>Resolved IPs</th>
+            <th>Reason</th>
+            <th>Created</th>
+            <th class="th-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="domainRows">
+          <tr><td colspan="7" class="table-empty">Loading domains…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- Domain details modal (page-specific) -->
+<div class="modal" id="domain-detail-modal" hidden>
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card modal-lg" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="modal-head">
+      <h3 id="detailTitle">Domain Details</h3>
+      <button class="modal-x" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body" id="domainDetailBody">
+      <div class="table-empty">Loading…</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

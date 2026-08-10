@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-stack">
+
+  <!-- Quick actions -->
+  <section class="quick-actions card">
+    <div class="quick-title">Quick Actions</div>
+    <div class="quick-buttons">
+      <button class="btn btn-primary" data-open-modal="block-modal">
+        <span class="btn-icon">⛔</span> Block Domain
+      </button>
+      <button class="btn btn-ghost" data-open-modal="unblock-modal">
+        <span class="btn-icon">↩</span> Unblock Domain
+      </button>
+      <button class="btn btn-ghost" data-open-modal="blacklist-modal">
+        <span class="btn-icon">⛔</span> Add Blacklist
+      </button>
+      <button class="btn btn-ghost" data-open-modal="temporary-modal">
+        <span class="btn-icon">⏱</span> Temporary Block
+      </button>
+    </div>
+  </section>
+
+  <!-- Stat cards -->
+  <section class="stat-grid" aria-label="Statistics">
+    <div class="stat-card card" data-stat="blocked_domains">
+      <div class="stat-icon stat-icon-red">{% include 'icons/globe.svg' %}</div>
+      <div class="stat-meta"><span class="stat-value">–</span><span class="stat-label">Blocked Domains</span></div>
+    </div>
+    <div class="stat-card card" data-stat="allowed_domains">
+      <div class="stat-icon stat-icon-green">{% include 'icons/globe.svg' %}</div>
+      <div class="stat-meta"><span class="stat-value">–</span><span class="stat-label">Allowed Domains</span></div>
+    </div>
+    <div class="stat-card card" data-stat="blacklist">
+      <div class="stat-icon stat-icon-red">{% include 'icons/list.svg' %}</div>
+      <div class="stat-meta"><span class="stat-value">–</span><span class="stat-label">Blacklist Entries</span></div>
+    </div>
+    <div class="stat-card card" data-stat="whitelist">
+      <div class="stat-icon stat-icon-cyan">{% include 'icons/list.svg' %}</div>
+      <div class="stat-meta"><span class="stat-value">–</span><span class="stat-label">Whitelist Entries</span></div>
+    </div>
+    <div class="stat-card card" data-stat="ufw_rules">
+      <div class="stat-icon stat-icon-violet">{% include 'icons/shield.svg' %}</div>
+      <div class="stat-meta"><span class="stat-value">–</span><span class="stat-label">Active UFW Rules</span></div>
+    </div>
+    <div class="stat-card card" data-stat="temporary_active">
+      <div class="stat-icon stat-icon-amber">{% include 'icons/clock.svg' %}</div>
+      <div class="stat-meta"><span class="stat-value">–</span><span class="stat-label">Temporary Blocks</span></div>
+    </div>
+  </section>
+
+  <!-- System status -->
+  <section class="status-grid">
+    <div class="card status-card">
+      <div class="status-card-head">
+        <h3>UFW Firewall</h3>
+        <span class="badge badge-ghost" id="ufwBadge">Checking…</span>
+      </div>
+      <div class="status-card-body">
+        <div class="kv"><span>Status</span><strong id="ufwStatus">–</strong></div>
+        <div class="kv"><span>Default Incoming</span><strong id="ufwIncoming">–</strong></div>
+        <div class="kv"><span>Default Outgoing</span><strong id="ufwOutgoing">–</strong></div>
+        <p class="status-note" id="ufwNote">Live output from <code>ufw status</code>.</p>
+      </div>
+      <div class="status-card-foot">
+        <a href="{{ url_for('firewall.page') }}" class="btn btn-ghost btn-sm">Manage UFW →</a>
+      </div>
+    </div>
+
+    <div class="card status-card">
+      <div class="status-card-head">
+        <h3>DNS Filtering</h3>
+        <span class="badge badge-ghost" id="dnsBadge">Checking…</span>
+      </div>
+      <div class="status-card-body">
+        <div class="kv"><span>Service</span><strong id="dnsService">–</strong></div>
+        <div class="kv"><span>Config file</span><strong id="dnsConf" class="mono">–</strong></div>
+        <div class="kv"><span>Poison answer</span><strong id="dnsPoison" class="mono">–</strong></div>
+        <p class="status-note">dnsmasq returns <code>0.0.0.0</code> for blocked domains.</p>
+      </div>
+      <div class="status-card-foot">
+        <a href="{{ url_for('domains.page') }}" class="btn btn-ghost btn-sm">Manage Domains →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent activity -->
+  <section class="card">
+    <div class="card-head">
+      <h3>Recent Security Activity</h3>
+      <a href="{{ url_for('temporary.page') }}" class="btn btn-ghost btn-sm">View Logs →</a>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Time</th><th>Event</th><th>Target</th><th>Status</th><th>Message</th>
+          </tr>
+        </thead>
+        <tbody id="activityRows">
+          <tr><td colspan="5" class="table-empty">Loading activity…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

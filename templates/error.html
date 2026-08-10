@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ code }} · {{ app_name }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body" data-page="error">
+  <div class="login-shell">
+    <div class="error-card">
+      <div class="error-code">{{ code }}</div>
+      <h1 class="error-title">{{ title }}</h1>
+      <p class="error-message">{{ message }}</p>
+      <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary">Back to Dashboard</a>
+      <a href="{{ url_for('auth.login') }}" class="btn btn-ghost">Sign In</a>
+    </div>
+  </div>
+</body>
+</html>

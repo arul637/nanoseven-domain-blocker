@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-stack">
+
+  <!-- Status + controls -->
+  <section class="firewall-hero card">
+    <div class="fw-status-block">
+      <div class="fw-status-icon" id="fwIcon">
+        <span>{% include 'icons/shield.svg' %}</span>
+      </div>
+      <div>
+        <div class="fw-status-title">
+          <span id="fwStatusLabel">Checking…</span>
+          <span class="badge badge-ghost" id="fwBadge">–</span>
+        </div>
+        <p class="fw-status-sub" id="fwStatusNote">Live state from <code>ufw status</code>.</p>
+      </div>
+    </div>
+    <div class="fw-defaults">
+      <div class="kv"><span>Default Incoming</span><strong id="fwIncoming">–</strong></div>
+      <div class="kv"><span>Default Outgoing</span><strong id="fwOutgoing">–</strong></div>
+    </div>
+    <div class="fw-controls">
+      <button class="btn btn-primary" data-action="ufw-enable">Enable UFW</button>
+      <button class="btn btn-ghost" data-action="ufw-disable">Disable UFW</button>
+      <button class="btn btn-ghost" data-action="ufw-reload">Reload</button>
+      <button class="btn btn-danger" data-action="ufw-reset">Reset UFW</button>
+    </div>
+  </section>
+
+  <!-- Add rule -->
+  <section class="card">
+    <div class="card-head">
+      <h3>Add UFW Rule</h3>
+      <p>Creates a rule tagged with an <code>IDB-USER-*</code> comment so Nano Blocker can remove it later.</p>
+    </div>
+    <form id="addRuleForm" class="rule-form">
+      <div class="rule-form-grid">
+        <div class="field">
+          <label for="rule-action">Action</label>
+          <select id="rule-action" name="action">
+            <option value="allow" selected>Allow</option>
+            <option value="deny">Deny</option>
+            <option value="reject">Reject</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rule-direction">Direction</label>
+          <select id="rule-direction" name="direction">
+            <option value="in" selected>Incoming</option>
+            <option value="out">Outgoing</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rule-source">Source IP <span class="opt">(optional)</span></label>
+          <input id="rule-source" name="source" type="text" placeholder="192.168.1.100">
+        </div>
+        <div class="field">
+          <label for="rule-destination">Destination IP <span class="opt">(optional)</span></label>
+          <input id="rule-destination" name="destination" type="text" placeholder="203.0.113.7">
+        </div>
+        <div class="field">
+          <label for="rule-port">Port <span class="opt">(optional)</span></label>
+          <input id="rule-port" name="port" type="number" min="1" max="65535" placeholder="80">
+        </div>
+        <div class="field">
+          <label for="rule-protocol">Protocol</label>
+          <select id="rule-protocol" name="protocol">
+            <option value="any" selected>Any</option>
+            <option value="tcp">TCP</option>
+            <option value="udp">UDP</option>
+          </select>
+        </div>
+        <div class="field field-wide">
+          <label for="rule-comment">Comment <span class="opt">(optional)</span></label>
+          <input id="rule-comment" name="comment" type="text" placeholder="e.g. deny ssh from lab subnet">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add Rule</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Rules table -->
+  <section class="card">
+    <div class="card-head">
+      <h3>Active Rules</h3>
+      <p>Rules tagged <code>IDB-*</code> were created by Nano Blocker. Other rules require explicit confirmation to delete.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th><th>Action</th><th>Direction</th><th>From</th><th>To</th>
+            <th>Port</th><th>Protocol</th><th>Comment</th><th>Source</th><th class="th-actions">Action</th>
+          </tr>
+        </thead>
+        <tbody id="ruleRows">
+          <tr><td colspan="10" class="table-empty">Loading rules…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}

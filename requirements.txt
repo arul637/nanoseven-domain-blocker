@@ -1,0 +1,3 @@
+Flask>=3.0.0
+Flask-WTF>=1.2.0
+Werkzeug>=3.0.0
